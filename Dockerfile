@@ -51,13 +51,16 @@ RUN apt-get -y -q update \
  && apt-get -y -q upgrade \
  && apt-get -y -q install \
 	bash-completion \
-	libnetcdf-c++4-1 \
+	libnetcdf-c++4-dev \
 	libboost-log1.74 \
 	libboost-program-options1.74 \
+	libeigen3-dev \
 	netcdf-bin \
         vim \
 	wget \
- && rm -rf /var/lib/apt/lists/*
+ 	cmake \
+	git \
+&& rm -rf /var/lib/apt/lists/*
 
 # Copy from build container
 COPY --from=build /build/nextsimdg/build/ /opt/nextsimdg
@@ -67,4 +70,5 @@ RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
+RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean nbgitpuller
 USER $NB_USER
