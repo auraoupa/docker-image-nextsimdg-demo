@@ -70,5 +70,5 @@ RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
-RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean nbgitpuller
+RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 nbgitpuller
 USER $NB_USER
