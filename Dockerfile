@@ -31,7 +31,7 @@ RUN git clone -b v2.x https://github.com/catchorg/Catch2.git \
 
 # Get nextsimdg source from the dedicated branch for test case
 WORKDIR /build
-RUN git clone -b issue194_topaz_era https://github.com/nextsimdg/nextsimdg.git \
+RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
  && cd nextsimdg \
  && cmake -B build/ \
  && make -j ${MAX_JOBS} -C build
@@ -66,9 +66,11 @@ RUN apt-get -y -q update \
 COPY --from=build /build/nextsimdg/build/ /opt/nextsimdg
 RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 
+COPY --from=build /build/nextsimdg/run/ /work/run
+
 # Adding necessary group for SUMMER fs
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
-RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 nbgitpuller
+RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller
 USER $NB_USER
