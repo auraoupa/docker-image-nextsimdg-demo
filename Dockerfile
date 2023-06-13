@@ -15,8 +15,7 @@ RUN apt-get -y -q update \
 	build-essential \
 	cmake \
 	git \
-	libboost-log1.74-dev \
-	libboost-program-options1.74-dev \
+	libboost-all-dev \
 	libeigen3-dev \
 	libnetcdf-c++4-dev \
 	netcdf-bin \
@@ -33,8 +32,10 @@ RUN git clone -b v2.x https://github.com/catchorg/Catch2.git \
 WORKDIR /build
 RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
  && cd nextsimdg \
- && cmake -B build/ \
- && make -j ${MAX_JOBS} -C build
+ && mkdir -p build \
+ && cd build \
+ && cmake .. \
+ && make 
 
 #
 # Final container
