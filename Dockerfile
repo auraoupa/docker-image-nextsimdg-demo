@@ -15,7 +15,8 @@ RUN apt-get -y -q update \
 	build-essential \
 	cmake \
 	git \
-	libboost-all-dev \
+	libboost-log1.74-dev \
+	libboost-program-options1.74-dev \
 	libeigen3-dev \
 	libnetcdf-c++4-dev \
 	netcdf-bin \
@@ -32,10 +33,8 @@ RUN git clone -b v2.x https://github.com/catchorg/Catch2.git \
 WORKDIR /build
 RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
  && cd nextsimdg \
- && mkdir -p build \
- && cd build \
- && cmake .. \
- && make 
+ && cmake -B build/ \
+ && make -j ${MAX_JOBS} -C build
 
 #
 # Final container
@@ -67,7 +66,7 @@ RUN apt-get -y -q update \
 COPY --from=build /build/nextsimdg/build/ /opt/nextsimdg
 RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 
-COPY --from=build /build/nextsimdg/run/ /work/run
+RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git
 
 # Adding necessary group for SUMMER fs
 RUN groupadd -g 10128 pr-sasip \
