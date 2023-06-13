@@ -18,3 +18,11 @@ When a notebook interface is deployed do :
   - open the jupyterlab. with http://127.0.0.1:10000/lab?token=282834470c5bb5b1175caef0d3457ac9c103df4a2b356b4b
 
 
+# Material for the cloud demo at SASIP Meeting, June 2023
+Some important ressources :
+
+ - la documentation pour NOVA@GRICAD : https://gricad-doc.univ-grenoble-alpes.fr/nova/
+ - Interface web du projet : https://gricad-doc.univ-grenoble-alpes.fr/nova/
+ - where to manage the project : https://gricad-gitlab.univ-grenoble-alpes.fr/OSUG/DC/sasip-hub
+ - if we want to change the docker image : modify https://gricad-gitlab.univ-grenoble-alpes.fr/OSUG/DC/sasip-hub/-/blob/main/config/sasiphub-config.yml, it will be propagated in a few minutes
+ - The cloud is accessible here : https://sasip-01-server-001.osug.fr/
