@@ -68,7 +68,7 @@ RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 
 RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git
 WORKDIR nextsimdg/run
-RUN netxsim --config-file config_simple_example.cfg
+RUN /opt/nextsimdg/build/netxsim --config-file config_simple_example.cfg
 
 # Adding necessary group for SUMMER fs
 RUN groupadd -g 10128 pr-sasip \
