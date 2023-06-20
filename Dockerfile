@@ -36,10 +36,6 @@ RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
  && cmake -B build/ \
  && make -j ${MAX_JOBS} -C build
 
-WORKDIR /build/nextsimdg/run 
-RUN ln -sf ../build/nextsim . \
- && ./netxsim --config-file config_simple_example.cfg
-
 #
 # Final container
 #
