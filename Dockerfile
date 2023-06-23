@@ -33,7 +33,7 @@ RUN git clone -b v2.x https://github.com/catchorg/Catch2.git \
 WORKDIR /build
 RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
  && cd nextsimdg \
- && cmake -B build/ \
+ && cmake -DCMAKE_BUILD_TYPE=Release -B build/ \
  && make -j ${MAX_JOBS} -C build
 
 #
