@@ -31,7 +31,7 @@ RUN git clone -b v2.x https://github.com/catchorg/Catch2.git \
 
 # Get nextsimdg source from the dedicated branch for test case
 WORKDIR /build
-RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git \
+RUN git clone -b develop https://github.com/nextsimdg/nextsimdg.git \
  && cd nextsimdg \
  && cmake -DCMAKE_BUILD_TYPE=Release -B build/ \
  && make -j ${MAX_JOBS} -C build
