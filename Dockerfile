@@ -72,5 +72,15 @@ RUN git clone -b develop https://github.com/nextsimdg/nextsimdg.git
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y wget bzip2 \
+    && wget -qO-  https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba \
+    && touch /root/.bashrc \
+    && ./bin/micromamba shell init -s bash -p /opt/conda  \
+    && cp /root/.bashrc /opt/conda/bashrc \
+    && apt-get clean autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}
+
 RUN micromamba install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller
 USER $NB_USER
