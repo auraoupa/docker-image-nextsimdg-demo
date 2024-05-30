@@ -66,11 +66,11 @@ RUN apt-get -y -q update \
 COPY --from=build /build/nextsimdg/build/ /opt/nextsimdg
 RUN  ln -s /opt/nextsimdg/nextsim /usr/local/bin/
 
-RUN git clone -b june23_demo https://github.com/nextsimdg/nextsimdg.git
+RUN git clone -b develop https://github.com/nextsimdg/nextsimdg.git
 
 # Adding necessary group for SUMMER fs
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
-RUN conda install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller
+RUN micromamba install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller
 USER $NB_USER
