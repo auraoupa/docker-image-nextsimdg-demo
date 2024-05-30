@@ -76,10 +76,10 @@ SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
 ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
 CMD ["/bin/bash"]
 
-RUN micromamba install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller &&\
+RUN micromamba install --yes --name base --channel conda-forge \
+      xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller && \
     micromamba clean --all --yes
-
-
+    
 USER root
 
 RUN apt-get -y -q update \
