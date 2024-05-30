@@ -50,6 +50,8 @@ FROM jupyter/base-notebook:2023-05-15
 # Disable announcements
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
 
+USER root
+
 ARG MAMBA_USER=mambauser
 ARG MAMBA_USER_ID=57439
 ARG MAMBA_USER_GID=57439
