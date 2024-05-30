@@ -36,6 +36,11 @@ RUN git clone -b develop https://github.com/nextsimdg/nextsimdg.git \
  && cmake -DCMAKE_BUILD_TYPE=Release -B build/ \
  && make -j ${MAX_JOBS} -C build
 
+
+# Micromamba container
+
+FROM mambaorg/micromamba:1.5.8 as micromamba
+
 #
 # Final container
 #
@@ -44,6 +49,34 @@ FROM jupyter/base-notebook:2023-05-15
 
 # Disable announcements
 RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
+
+ARG MAMBA_USER=mambauser
+ARG MAMBA_USER_ID=57439
+ARG MAMBA_USER_GID=57439
+ENV MAMBA_USER=$MAMBA_USER
+ENV MAMBA_ROOT_PREFIX="/opt/conda"
+ENV MAMBA_EXE="/bin/micromamba"
+
+COPY --from=micromamba "$MAMBA_EXE" "$MAMBA_EXE"
+COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
+COPY --from=micromamba /usr/local/bin/_entrypoint.sh /usr/local/bin/_entrypoint.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
+COPY --from=micromamba /usr/local/bin/_dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
+
+RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
+    /usr/local/bin/_dockerfile_setup_root_prefix.sh
+
+USER $MAMBA_USER
+
+SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
+
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+CMD ["/bin/bash"]
+
+RUN micromamba install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller &&\
+    micromamba clean --all --yes
+
 
 USER root
 
@@ -72,15 +105,6 @@ RUN git clone -b develop https://github.com/nextsimdg/nextsimdg.git
 RUN groupadd -g 10128 pr-sasip \
  && usermod -g 10128 $NB_USER
 
-WORKDIR /app
 
-RUN apt-get update && apt-get install -y wget bzip2 \
-    && wget -qO-  https://micromamba.snakepit.net/api/micromamba/linux-64/latest | tar -xvj bin/micromamba \
-    && touch /root/.bashrc \
-    && ./bin/micromamba shell init -s bash -p /opt/conda  \
-    && cp /root/.bashrc /opt/conda/bashrc \
-    && apt-get clean autoremove --yes \
-    && rm -rf /var/lib/{apt,dpkg,cache,log}
 
-RUN micromamba install -y -c conda-forge xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller
 USER $NB_USER
