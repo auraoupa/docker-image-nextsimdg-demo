@@ -77,7 +77,7 @@ ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
 CMD ["/bin/bash"]
 
 RUN micromamba install --yes --name base --channel conda-forge \
-      xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller && \
+      xarray matplotlib cartopy cmocean numpy netcdf4 dask nbgitpuller pandas && \
     micromamba clean --all --yes
     
 USER root
